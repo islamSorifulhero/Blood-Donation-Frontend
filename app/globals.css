@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.5rem;
+
+  /* Canvas & surfaces */
+  --background: #F5F6F4;
+  --foreground: #1B1F23;
+  --card: #FFFFFF;
+  --card-foreground: #1B1F23;
+  --popover: #FFFFFF;
+  --popover-foreground: #1B1F23;
+
+  /* Brand / semantic */
+  --primary: #9F1D35;          /* crimson — emergency CTA, CRITICAL badge only */
+  --primary-foreground: #FFFFFF;
+  --secondary: #ECEEEA;
+  --secondary-foreground: #1B1F23;
+  --muted: #ECEEEA;
+  --muted-foreground: #5B6472; /* slate */
+  --accent: #ECEEEA;
+  --accent-foreground: #1B1F23;
+  --destructive: #9F1D35;
+  --destructive-foreground: #FFFFFF;
+
+  --success: #0E6E5D;          /* pine — available / verified / fulfilled */
+  --success-foreground: #FFFFFF;
+  --pending: #A3610A;          /* amber — pending / medium urgency */
+  --pending-foreground: #FFFFFF;
+
+  --border: #DADEDD;
+  --input: #DADEDD;
+  --ring: #9F1D35;
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-pending: var(--pending);
+  --color-pending-foreground: var(--pending-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-serif);
+}
