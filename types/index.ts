@@ -178,6 +178,27 @@ export interface RequestMatch {
   donor: { id: string; name: string; bloodGroup: BloodGroup; city: string };
 }
 
+// Returned by GET /blood-requests/matches/mine — a donor's own match rows,
+// with the parent request embedded (as opposed to RequestMatch above, which is
+// the hospital/admin view of one request's matched donors).
+export interface MyMatch {
+  id: string;
+  status: MatchStatus;
+  notifiedAt: string;
+  respondedAt: string | null;
+  bloodRequest: {
+    id: string;
+    patientName: string;
+    bloodGroup: BloodGroup;
+    urgency: UrgencyLevel;
+    status: RequestStatus;
+    city: string;
+    requiredBy: string;
+    hospital: { hospitalName: string };
+  };
+  donation: { id: string; status: DonationStatus } | null;
+}
+
 export interface Donation {
   id: string;
   unitsDonated: number;

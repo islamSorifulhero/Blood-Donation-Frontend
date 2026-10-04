@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, Users, Hospital, Droplet, ScrollText } from "lucide-react";
+import { LayoutDashboard, Users, Hospital, Droplet, ScrollText, Receipt } from "lucide-react";
 import { DashboardShell, type NavItem } from "@/components/layout/dashboard-shell";
 
 const navItems: NavItem[] = [
@@ -8,6 +8,7 @@ const navItems: NavItem[] = [
   { label: "Users", href: "/admin/users", icon: Users },
   { label: "Hospitals", href: "/admin/hospitals", icon: Hospital },
   { label: "Blood Requests", href: "/admin/requests", icon: Droplet },
+  { label: "Payments", href: "/admin/payments", icon: Receipt },
   { label: "Audit Logs", href: "/admin/audit-logs", icon: ScrollText },
 ];
 

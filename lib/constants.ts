@@ -46,6 +46,28 @@ export const REQUEST_STATUS_LABELS: Record<string, string> = {
   EXPIRED: "Expired",
 };
 
+// Only providers actually wired up end-to-end in the backend (bKash is a documented
+// extension point there, not implemented) — so it's left out of the UI entirely rather
+// than offering a flow that would dead-end.
+export const PAYMENT_PROVIDER_OPTIONS = [
+  { value: "STRIPE", label: "Card (Stripe)" },
+  { value: "SSLCOMMERZ", label: "SSLCommerz (bKash/Nagad/Cards)" },
+] as const;
+
+export const PAYMENT_STATUS_VARIANT: Record<string, "default" | "success" | "destructive" | "outline"> = {
+  PENDING: "outline",
+  SUCCESS: "success",
+  FAILED: "destructive",
+  CANCELLED: "destructive",
+  REFUNDED: "default",
+};
+
+export const PAYMENT_PURPOSE_LABELS: Record<string, string> = {
+  PRIORITY_REQUEST_FEE: "Priority request fee",
+  HOSPITAL_VERIFICATION_FEE: "Hospital verification fee",
+  PLATFORM_DONATION: "Platform donation",
+};
+
 // Major Bangladesh cities with coordinates, so forms can offer a city picker instead
 // of asking people to type raw latitude/longitude.
 export const BD_CITIES: Array<{ name: string; lat: number; lng: number }> = [

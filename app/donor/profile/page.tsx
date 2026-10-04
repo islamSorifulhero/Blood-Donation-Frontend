@@ -6,36 +6,35 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ErrorState } from "@/components/shared/error-state";
-import { useMyHospitalProfile, useUpdateMyHospitalProfile } from "@/hooks/use-hospital";
-import { useInitiatePayment } from "@/hooks/use-payments";
-import { BD_CITIES } from "@/lib/constants";
+import { useMyDonorProfile, useUpdateMyDonorProfile } from "@/hooks/use-donor";
+import { BD_CITIES, BLOOD_GROUP_LABELS, GENDER_OPTIONS } from "@/lib/constants";
 
 const schema = z.object({
-  hospitalName: z.string().min(2).max(150),
   address: z.string().min(3),
   city: z.string().min(2),
+  medicalNotes: z.string().max(1000).optional(),
 });
 type FormValues = z.infer<typeof schema>;
 
-export default function HospitalProfilePage() {
-  const { data: profile, isLoading, isError, refetch } = useMyHospitalProfile();
-  const updateProfile = useUpdateMyHospitalProfile();
-  const initiatePayment = useInitiatePayment();
+export default function DonorProfilePage() {
+  const { data: profile, isLoading, isError, refetch } = useMyDonorProfile();
+  const updateProfile = useUpdateMyDonorProfile();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { hospitalName: "", address: "", city: "" },
+    defaultValues: { address: "", city: "", medicalNotes: "" },
   });
 
   useEffect(() => {
     if (profile) {
-      form.reset({ hospitalName: profile.hospitalName, address: profile.address, city: profile.city });
+      form.reset({ address: profile.address ?? "", city: profile.city, medicalNotes: profile.medicalNotes ?? "" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
@@ -50,50 +49,45 @@ export default function HospitalProfilePage() {
   }
 
   if (isError || !profile) {
-    return <ErrorState message="Couldn't load your hospital profile." onRetry={() => refetch()} />;
+    return <ErrorState message="Couldn't load your profile." onRetry={() => refetch()} />;
   }
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="font-display text-2xl font-medium">Hospital profile</h1>
-      <div className="mt-3 flex items-center gap-3 text-sm text-muted-foreground">
-        <Badge variant={profile.isVerified ? "success" : "pending"}>
-          {profile.isVerified ? "Verified" : "Pending verification"}
-        </Badge>
-        <span>Reg. no. {profile.registrationNumber}</span>
-      </div>
+      <h1 className="font-display text-2xl font-medium">Profile</h1>
 
-      {!profile.isVerified && (
-        <Card className="mt-6 border-primary/30">
-          <CardContent className="flex items-center justify-between p-6">
-            <div>
-              <p className="font-medium">Verification processing fee</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                This is a one-time processing fee. It doesn&rsquo;t auto-verify your account —
-                an admin still reviews and approves every hospital manually.
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              loading={initiatePayment.isPending}
-              onClick={() => initiatePayment.mutate({ purpose: "HOSPITAL_VERIFICATION_FEE", provider: "STRIPE" })}
-            >
-              Pay verification fee
-            </Button>
-          </CardContent>
-        </Card>
-      )}
+      {/* Identity fields — set at registration, not editable here */}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="text-base">Donor identity</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p className="text-muted-foreground">Blood group</p>
+            <Badge className="mt-1">{BLOOD_GROUP_LABELS[profile.bloodGroup]}</Badge>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Gender</p>
+            <p className="mt-1 font-medium">{GENDER_OPTIONS.find((g) => g.value === profile.gender)?.label ?? "—"}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Date of birth</p>
+            <p className="mt-1 font-medium">{profile.dateOfBirth ? new Date(profile.dateOfBirth).toLocaleDateString() : "—"}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Weight</p>
+            <p className="mt-1 font-medium">{profile.weightKg ? `${profile.weightKg} kg` : "—"}</p>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle className="text-base">Edit details</CardTitle>
+          <CardTitle className="text-base">Contact &amp; location</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit((values) => updateProfile.mutate(values))} className="space-y-4">
-              <FormField control={form.control} name="hospitalName" render={({ field }) => (
-                <FormItem><FormLabel>Hospital name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-              )} />
               <FormField control={form.control} name="address" render={({ field }) => (
                 <FormItem><FormLabel>Address</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
               )} />
@@ -113,6 +107,13 @@ export default function HospitalProfilePage() {
                   </FormItem>
                 )}
               />
+              <FormField control={form.control} name="medicalNotes" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Medical notes (optional)</FormLabel>
+                  <FormControl><Textarea rows={3} {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
               <Button type="submit" loading={updateProfile.isPending}>
                 Save changes
               </Button>

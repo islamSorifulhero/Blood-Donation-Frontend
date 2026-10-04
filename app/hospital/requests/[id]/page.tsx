@@ -12,6 +12,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { RequestStatusBadge, UrgencyBadge } from "@/components/shared/status-badges";
 import { useBloodRequest, useRequestMatches, useCancelBloodRequest } from "@/hooks/use-blood-requests";
+import { useInitiatePayment } from "@/hooks/use-payments";
 import { BLOOD_GROUP_LABELS } from "@/lib/constants";
 
 const MATCH_STATUS_VARIANT: Record<string, "default" | "success" | "destructive" | "outline"> = {
@@ -30,6 +31,7 @@ export default function HospitalRequestDetailPage({ params }: { params: Promise<
   const { data: request, isLoading, isError, refetch } = useBloodRequest(id);
   const { data: matches, isLoading: matchesLoading } = useRequestMatches(id);
   const cancelRequest = useCancelBloodRequest();
+  const initiatePayment = useInitiatePayment();
 
   if (isLoading) {
     return (
@@ -91,6 +93,30 @@ export default function HospitalRequestDetailPage({ params }: { params: Promise<
         <InfoCard label="Units" value={`${request.unitsFulfilled} / ${request.unitsNeeded} fulfilled`} />
         <InfoCard label="Required by" value={new Date(request.requiredBy).toLocaleString()} />
       </div>
+
+      {canCancel && (
+        <Card className="mt-4 border-primary/30">
+          <CardContent className="flex items-center justify-between p-6">
+            <div>
+              <p className="font-medium">Priority request fee</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                An optional fee tied to this request&rsquo;s urgency level. Matching and
+                verification already run the same way regardless of payment.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              loading={initiatePayment.isPending}
+              onClick={() =>
+                initiatePayment.mutate({ purpose: "PRIORITY_REQUEST_FEE", provider: "STRIPE", bloodRequestId: request.id })
+              }
+            >
+              Pay priority fee
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {request.reason && (
         <Card className="mt-4">
