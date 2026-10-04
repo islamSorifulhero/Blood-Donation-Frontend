@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Hospital, Droplet, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PublicNav } from "@/components/layout/public-nav";
+import { PublicFooter } from "@/components/layout/public-footer";
 
 export default function HomePage() {
   return (
@@ -91,12 +92,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-border py-8">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 text-sm text-muted-foreground">
-          <span>RaktoSheba — B7A7 project</span>
-          <Link href="/contact" className="hover:text-foreground">Contact</Link>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }
