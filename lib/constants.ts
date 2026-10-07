@@ -86,18 +86,18 @@ export const BD_CITIES: Array<{ name: string; lat: number; lng: number }> = [
 // Demo accounts for the one-click login buttons. The admin account comes from the
 // backend's Prisma seed. Donor/Hospital demo accounts must be created once (register
 // them normally, then verify the hospital as admin) using these same credentials —
-// see README "Demo accounts" section.
+// Demo accounts for the one-click login buttons.
 export const DEMO_ACCOUNTS = {
   ADMIN: {
-    email: process.env.NEXT_PUBLIC_DEMO_ADMIN_EMAIL ?? "admin@blooddonation.app",
-    password: process.env.NEXT_PUBLIC_DEMO_ADMIN_PASSWORD ?? "ChangeMe123!",
+    email: "admin@blooddonation.app",
+    password: "ChangeMe123!",
   },
   DONOR: {
-    email: process.env.NEXT_PUBLIC_DEMO_DONOR_EMAIL ?? "demo.donor@raktosheba.app",
-    password: process.env.NEXT_PUBLIC_DEMO_DONOR_PASSWORD ?? "DemoDonor123!",
+    email: "donor@example.com",
+    password: "ChangeMe123!",
   },
   HOSPITAL: {
-    email: process.env.NEXT_PUBLIC_DEMO_HOSPITAL_EMAIL ?? "demo.hospital@raktosheba.app",
-    password: process.env.NEXT_PUBLIC_DEMO_HOSPITAL_PASSWORD ?? "DemoHospital123!",
+    email: "hospital@example.com",
+    password: "ChangeMe123!",
   },
 } as const;

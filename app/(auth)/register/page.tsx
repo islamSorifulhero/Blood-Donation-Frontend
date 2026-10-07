@@ -51,13 +51,20 @@ export default function RegisterPage() {
   );
 }
 
-function CityField({ onPick }: { onPick: (city: string, lat: number, lng: number) => void }) {
+function CityField({
+  value,
+  onPick,
+}: {
+  value?: string;
+  onPick: (city: string, lat: number, lng: number) => void;
+}) {
   return (
     <FormItem>
       <FormLabel>City</FormLabel>
       <Select
-        onValueChange={(value) => {
-          const city = BD_CITIES.find((c) => c.name === value);
+        value={value || ""}
+        onValueChange={(val) => {
+          const city = BD_CITIES.find((c) => c.name === val);
           if (city) onPick(city.name, city.lat, city.lng);
         }}
       >
@@ -91,9 +98,9 @@ function DonorForm() {
       dateOfBirth: "",
       address: "",
       city: "",
-      weightKg: undefined as unknown as number,
-      latitude: undefined as unknown as number,
-      longitude: undefined as unknown as number,
+      weightKg: undefined,
+      latitude: 0,
+      longitude: 0,
     },
   });
 
@@ -105,65 +112,168 @@ function DonorForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
         <div className="grid grid-cols-2 gap-4">
-          <FormField control={form.control} name="name" render={({ field }) => (
-            <FormItem><FormLabel>Full name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="phone" render={({ field }) => (
-            <FormItem><FormLabel>Phone</FormLabel><FormControl><Input placeholder="+8801XXXXXXXXX" {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full name</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value || ""} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <Input placeholder="+8801XXXXXXXXX" {...field} value={field.value || ""} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <FormField control={form.control} name="email" render={({ field }) => (
-          <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="password" render={({ field }) => (
-          <FormItem><FormLabel>Password</FormLabel><FormControl><Input type="password" {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-
-        <div className="grid grid-cols-2 gap-4">
-          <FormField control={form.control} name="bloodGroup" render={({ field }) => (
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
             <FormItem>
-              <FormLabel>Blood group</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
-                <FormControl><SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger></FormControl>
-                <SelectContent>
-                  {BLOOD_GROUP_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                </SelectContent>
-              </Select>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" {...field} value={field.value || ""} />
+              </FormControl>
               <FormMessage />
             </FormItem>
-          )} />
-          <FormField control={form.control} name="gender" render={({ field }) => (
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
             <FormItem>
-              <FormLabel>Gender</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
-                <FormControl><SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger></FormControl>
-                <SelectContent>
-                  {GENDER_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                </SelectContent>
-              </Select>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} value={field.value || ""} />
+              </FormControl>
               <FormMessage />
             </FormItem>
-          )} />
+          )}
+        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="bloodGroup"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Blood group</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value || ""}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {BLOOD_GROUP_OPTIONS.map((o) => (
+                      <SelectItem key={o.value} value={o.value}>
+                        {o.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value || ""}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {GENDER_OPTIONS.map((o) => (
+                      <SelectItem key={o.value} value={o.value}>
+                        {o.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField control={form.control} name="dateOfBirth" render={({ field }) => (
-            <FormItem><FormLabel>Date of birth</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="weightKg" render={({ field }) => (
-            <FormItem><FormLabel>Weight (kg)</FormLabel><FormControl><Input type="number" step="0.1" {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
+          <FormField
+            control={form.control}
+            name="dateOfBirth"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Date of birth</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} value={field.value || ""} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="weightKg"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Weight (kg)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    name={field.name}
+                    ref={field.ref}
+                    onBlur={field.onBlur}
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
-        <FormField control={form.control} name="address" render={({ field }) => (
-          <FormItem><FormLabel>Address</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
           name="city"
-          render={() => (
+          render={({ field }) => (
             <CityField
+              value={field.value}
               onPick={(city, lat, lng) => {
                 form.setValue("city", city, { shouldValidate: true });
                 form.setValue("latitude", lat, { shouldValidate: true });
@@ -173,7 +283,7 @@ function DonorForm() {
           )}
         />
 
-        <Button type="submit" className="w-full" loading={registerDonor.isPending}>
+        <Button type="submit" className="w-full" disabled={registerDonor.isPending}>
           Create donor account
         </Button>
       </form>
@@ -194,8 +304,8 @@ function HospitalForm() {
       registrationNumber: "",
       address: "",
       city: "",
-      latitude: undefined as unknown as number,
-      longitude: undefined as unknown as number,
+      latitude: 0,
+      longitude: 0,
     },
   });
 
@@ -206,36 +316,107 @@ function HospitalForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
-        <FormField control={form.control} name="hospitalName" render={({ field }) => (
-          <FormItem><FormLabel>Hospital name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="registrationNumber" render={({ field }) => (
-          <FormItem><FormLabel>Registration number</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
+        <FormField
+          control={form.control}
+          name="hospitalName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Hospital name</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="registrationNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Registration number</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField control={form.control} name="name" render={({ field }) => (
-            <FormItem><FormLabel>Contact person</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="phone" render={({ field }) => (
-            <FormItem><FormLabel>Phone</FormLabel><FormControl><Input placeholder="+8801XXXXXXXXX" {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contact person</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value || ""} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <Input placeholder="+8801XXXXXXXXX" {...field} value={field.value || ""} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <FormField control={form.control} name="email" render={({ field }) => (
-          <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="password" render={({ field }) => (
-          <FormItem><FormLabel>Password</FormLabel><FormControl><Input type="password" {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="address" render={({ field }) => (
-          <FormItem><FormLabel>Address</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
           name="city"
-          render={() => (
+          render={({ field }) => (
             <CityField
+              value={field.value}
               onPick={(city, lat, lng) => {
                 form.setValue("city", city, { shouldValidate: true });
                 form.setValue("latitude", lat, { shouldValidate: true });
@@ -249,7 +430,7 @@ function HospitalForm() {
           Your account starts unverified — an admin must verify it before you can post blood requests.
         </p>
 
-        <Button type="submit" className="w-full" loading={registerHospital.isPending}>
+        <Button type="submit" className="w-full" disabled={registerHospital.isPending}>
           Create hospital account
         </Button>
       </form>
