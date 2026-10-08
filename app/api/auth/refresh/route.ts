@@ -12,13 +12,12 @@ export async function POST(req: NextRequest) {
   const upstream = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken }), // backend's body.refreshToken fallback — see auth.controller.ts
+    body: JSON.stringify({ refreshToken }),
   });
 
   const payload = await upstream.json().catch(() => ({ success: false, message: "Invalid response from API", errors: [] }));
   const response = NextResponse.json(payload, { status: upstream.status });
 
-  // The backend rotates the refresh token on every call — capture the new one.
   const setCookie = upstream.headers.get("set-cookie");
   const newRefreshToken = extractCookieValue(setCookie, "refreshToken");
   if (newRefreshToken) {
