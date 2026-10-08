@@ -39,7 +39,7 @@ export default function AboutPage() {
           </p>
           <h2 className="font-display text-xl text-foreground">What this project is</h2>
           <p>
-            RaktoSheba is a student project (B7A6/B7A7, Apollo Level 2 Web Dev) — a
+            RaktoSheba is a student project — a
             backend-first build with a Next.js frontend layered on top of it. It&rsquo;s a
             working demonstration of the matching logic above, not a production medical
             service.
