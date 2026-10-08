@@ -425,11 +425,9 @@ function HospitalForm() {
             />
           )}
         />
-
         <p className="text-xs text-muted-foreground">
           Your account starts unverified — an admin must verify it before you can post blood requests.
         </p>
-
         <Button type="submit" className="w-full" disabled={registerHospital.isPending}>
           Create hospital account
         </Button>

@@ -21,12 +21,15 @@ export default function NewBloodRequestPage() {
     resolver: zodResolver(createBloodRequestSchema),
     defaultValues: {
       patientName: "",
+      patientAge: undefined,
+      bloodGroup: undefined,
       unitsNeeded: 1,
+      urgency: undefined,
       reason: "",
       requiredBy: "",
       city: "",
-      latitude: undefined as unknown as number,
-      longitude: undefined as unknown as number,
+      latitude: 0,
+      longitude: 0,
     },
   });
 
@@ -53,55 +56,130 @@ export default function NewBloodRequestPage() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <FormField control={form.control} name="patientName" render={({ field }) => (
-                  <FormItem><FormLabel>Patient name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
-                <FormField control={form.control} name="patientAge" render={({ field }) => (
-                  <FormItem><FormLabel>Patient age (optional)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
+                <FormField
+                  control={form.control}
+                  name="patientName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Patient name</FormLabel>
+                      <FormControl>
+                        <Input {...field} value={field.value ?? ""} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="patientAge"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Patient age (optional)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          value={field.value ?? ""}
+                          onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <FormField control={form.control} name="bloodGroup" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Blood group needed</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl><SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger></FormControl>
-                      <SelectContent>
-                        {BLOOD_GROUP_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField control={form.control} name="unitsNeeded" render={({ field }) => (
-                  <FormItem><FormLabel>Units needed</FormLabel><FormControl><Input type="number" min={1} {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
+                <FormField
+                  control={form.control}
+                  name="bloodGroup"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Blood group needed</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value || ""}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {BLOOD_GROUP_OPTIONS.map((o) => (
+                            <SelectItem key={o.value} value={o.value}>
+                              {o.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="unitsNeeded"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Units needed</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={1}
+                          {...field}
+                          value={field.value ?? 1}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <FormField control={form.control} name="urgency" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Urgency</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl><SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger></FormControl>
-                      <SelectContent>
-                        {URGENCY_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>Critical requests search a wider donor radius.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField control={form.control} name="requiredBy" render={({ field }) => (
-                  <FormItem><FormLabel>Required by</FormLabel><FormControl><Input type="datetime-local" {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
+                <FormField
+                  control={form.control}
+                  name="urgency"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Urgency</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value || ""}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {URGENCY_OPTIONS.map((o) => (
+                            <SelectItem key={o.value} value={o.value}>
+                              {o.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>Critical requests search a wider donor radius.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="requiredBy"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Required by</FormLabel>
+                      <FormControl>
+                        <Input type="datetime-local" {...field} value={field.value ?? ""} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <FormField
                 control={form.control}
                 name="city"
-                render={() => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>City</FormLabel>
                     <Select
@@ -113,10 +191,19 @@ export default function NewBloodRequestPage() {
                           form.setValue("longitude", city.lng, { shouldValidate: true });
                         }
                       }}
+                      value={field.value || ""}
                     >
-                      <FormControl><SelectTrigger><SelectValue placeholder="Select a city" /></SelectTrigger></FormControl>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a city" />
+                        </SelectTrigger>
+                      </FormControl>
                       <SelectContent>
-                        {BD_CITIES.map((c) => <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>)}
+                        {BD_CITIES.map((c) => (
+                          <SelectItem key={c.name} value={c.name}>
+                            {c.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -124,13 +211,19 @@ export default function NewBloodRequestPage() {
                 )}
               />
 
-              <FormField control={form.control} name="reason" render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Reason (optional)</FormLabel>
-                  <FormControl><Textarea rows={3} {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                control={form.control}
+                name="reason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Reason (optional)</FormLabel>
+                    <FormControl>
+                      <Textarea rows={3} {...field} value={field.value ?? ""} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <Button type="submit" className="w-full" loading={createRequest.isPending}>
                 Submit request
