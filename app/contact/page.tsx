@@ -26,7 +26,7 @@ export default function ContactPage() {
               <Mail className="size-5 text-primary" />
               <p className="mt-3 text-sm font-medium">Email</p>
               <a href="mailto:support@raktosheba.app" className="mt-1 block text-sm text-muted-foreground hover:text-foreground">
-                support@raktosheba.app
+                islamsoriful.hero@gmail.com
               </a>
             </CardContent>
           </Card>
@@ -34,7 +34,7 @@ export default function ContactPage() {
             <CardContent className="p-6">
               <Phone className="size-5 text-primary" />
               <p className="mt-3 text-sm font-medium">Phone</p>
-              <p className="mt-1 text-sm text-muted-foreground">+880 1700-000000</p>
+              <p className="mt-1 text-sm text-muted-foreground">+880 1770-886813</p>
             </CardContent>
           </Card>
           <Card>
