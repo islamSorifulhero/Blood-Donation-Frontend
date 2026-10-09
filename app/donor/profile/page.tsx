@@ -36,7 +36,6 @@ export default function DonorProfilePage() {
     if (profile) {
       form.reset({ address: profile.address ?? "", city: profile.city, medicalNotes: profile.medicalNotes ?? "" });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   if (isLoading) {
@@ -56,7 +55,6 @@ export default function DonorProfilePage() {
     <div className="mx-auto max-w-xl">
       <h1 className="font-display text-2xl font-medium">Profile</h1>
 
-      {/* Identity fields — set at registration, not editable here */}
       <Card className="mt-6">
         <CardHeader>
           <CardTitle className="text-base">Donor identity</CardTitle>

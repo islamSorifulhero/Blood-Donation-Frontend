@@ -37,7 +37,6 @@ export default function HospitalProfilePage() {
     if (profile) {
       form.reset({ hospitalName: profile.hospitalName, address: profile.address, city: profile.city });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   if (isLoading) {
