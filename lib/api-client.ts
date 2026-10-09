@@ -20,16 +20,12 @@ interface RetriableConfig extends InternalAxiosRequestConfig {
   _retried?: boolean;
 }
 
-// Queue concurrent requests while a single refresh call is in flight, so a page that
-// fires several queries at once doesn't trigger several parallel refresh attempts.
 let refreshPromise: Promise<string | null> | null = null;
 
 async function refreshAccessToken(): Promise<string | null> {
   const { setAccessToken, clearAuth } = useAuthStore.getState();
 
   if (!refreshPromise) {
-    // Same-origin call to our own Next.js route handler, which holds the real
-    // refresh token in a first-party httpOnly cookie — see app/api/auth/refresh.
     refreshPromise = fetch("/api/auth/refresh", { method: "POST" })
       .then(async (res) => {
         if (!res.ok) throw new Error("refresh failed");
@@ -67,7 +63,6 @@ apiClient.interceptors.response.use(
   }
 );
 
-/** Pulls the backend's structured `{success:false, message, errors}` body into a readable string. */
 export function getApiErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
     const data = error.response?.data as { message?: string; errors?: Array<{ message?: string }> } | undefined;

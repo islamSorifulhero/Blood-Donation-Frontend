@@ -46,9 +46,6 @@ export const REQUEST_STATUS_LABELS: Record<string, string> = {
   EXPIRED: "Expired",
 };
 
-// Only providers actually wired up end-to-end in the backend (bKash is a documented
-// extension point there, not implemented) — so it's left out of the UI entirely rather
-// than offering a flow that would dead-end.
 export const PAYMENT_PROVIDER_OPTIONS = [
   { value: "STRIPE", label: "Card (Stripe)" },
   { value: "SSLCOMMERZ", label: "SSLCommerz (bKash/Nagad/Cards)" },
@@ -68,8 +65,6 @@ export const PAYMENT_PURPOSE_LABELS: Record<string, string> = {
   PLATFORM_DONATION: "Platform donation",
 };
 
-// Major Bangladesh cities with coordinates, so forms can offer a city picker instead
-// of asking people to type raw latitude/longitude.
 export const BD_CITIES: Array<{ name: string; lat: number; lng: number }> = [
   { name: "Dhaka", lat: 23.8103, lng: 90.4125 },
   { name: "Chittagong", lat: 22.3569, lng: 91.7832 },
@@ -83,10 +78,6 @@ export const BD_CITIES: Array<{ name: string; lat: number; lng: number }> = [
   { name: "Narayanganj", lat: 23.6238, lng: 90.5 },
 ];
 
-// Demo accounts for the one-click login buttons. The admin account comes from the
-// backend's Prisma seed. Donor/Hospital demo accounts must be created once (register
-// them normally, then verify the hospital as admin) using these same credentials —
-// Demo accounts for the one-click login buttons.
 export const DEMO_ACCOUNTS = {
   ADMIN: {
     email: "admin@blooddonation.app",
