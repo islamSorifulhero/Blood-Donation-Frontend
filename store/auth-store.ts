@@ -13,10 +13,6 @@ interface AuthState {
   setHasHydrated: (v: boolean) => void;
 }
 
-// Mirrors just the role (never a token) into a plain, readable cookie. This is what
-// middleware.ts reads to decide which dashboard a request is allowed into — a
-// routing/UX guard only. Real authorization still happens on every API call via the
-// Bearer access token, enforced by the backend's role middleware.
 function syncRoleCookie(role: string | null) {
   if (typeof document === "undefined") return;
   if (role) {
@@ -46,10 +42,6 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "rakto-auth",
-      // The access token is short-lived (15m) and only ever re-derived from the
-      // httpOnly refresh cookie via /api/auth/refresh, so persisting it just makes
-      // reloads snappier — worst case it's expired and the first request silently
-      // refreshes it.
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
         if (state?.user?.role) syncRoleCookie(state.user.role);

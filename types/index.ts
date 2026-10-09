@@ -1,5 +1,3 @@
-// Mirrors prisma/schema.prisma enums in the B7A6 backend — keep in sync if the schema changes.
-
 export const Role = { DONOR: "DONOR", HOSPITAL: "HOSPITAL", ADMIN: "ADMIN" } as const;
 export type Role = (typeof Role)[keyof typeof Role];
 
@@ -78,9 +76,6 @@ export const NotificationType = {
 } as const;
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
 
-// ---------------------------------------------------------------------------
-// API envelope — every backend response follows this shape
-// ---------------------------------------------------------------------------
 export interface ApiMeta {
   page: number;
   limit: number;
@@ -101,9 +96,6 @@ export interface ApiError {
   errors: Array<{ path?: string; message: string } | Record<string, unknown>>;
 }
 
-// ---------------------------------------------------------------------------
-// Core DTOs
-// ---------------------------------------------------------------------------
 export interface User {
   id: string;
   name: string;
@@ -178,9 +170,6 @@ export interface RequestMatch {
   donor: { id: string; name: string; bloodGroup: BloodGroup; city: string };
 }
 
-// Returned by GET /blood-requests/matches/mine — a donor's own match rows,
-// with the parent request embedded (as opposed to RequestMatch above, which is
-// the hospital/admin view of one request's matched donors).
 export interface MyMatch {
   id: string;
   status: MatchStatus;
