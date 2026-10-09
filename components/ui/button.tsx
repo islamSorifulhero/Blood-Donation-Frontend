@@ -39,8 +39,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, loading, disabled, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
 
-    // Radix Slot requires exactly one React-element child — asChild is for wrapping a
-    // single element (e.g. a Link), so the loading spinner only applies in button mode.
     if (asChild) {
       return (
         <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>

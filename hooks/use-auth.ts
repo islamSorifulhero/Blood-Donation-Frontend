@@ -20,7 +20,6 @@ async function postJson<T>(url: string, body: unknown): Promise<T> {
   });
   const json = await res.json();
   if (!res.ok || json.success === false) {
-    // Shape it like an axios error so getApiErrorMessage() handles both call sites identically.
     const error = new Error((json as ApiError).message ?? "Request failed") as Error & { response?: unknown };
     error.response = { data: json };
     throw error;

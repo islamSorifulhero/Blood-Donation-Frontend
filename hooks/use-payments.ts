@@ -59,8 +59,6 @@ export function useInitiatePayment() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["payments"] });
       if (data.redirectUrl) {
-        // Full navigation, not a client-side route change — the payer needs to leave
-        // the app entirely to the gateway's own hosted checkout page.
         window.location.href = data.redirectUrl;
       } else {
         toast.error("The payment provider didn't return a checkout link");

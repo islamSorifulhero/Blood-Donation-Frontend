@@ -15,7 +15,7 @@ export function useNotifications(isRead?: boolean) {
       return res.data.data;
     },
     enabled: !!accessToken,
-    refetchInterval: 60_000, // light polling — good enough for an assignment demo
+    refetchInterval: 60_000,
   });
 }
 
