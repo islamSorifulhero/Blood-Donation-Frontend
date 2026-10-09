@@ -25,7 +25,7 @@ export default function ContactPage() {
             <CardContent className="p-6">
               <Mail className="size-5 text-primary" />
               <p className="mt-3 text-sm font-medium">Email</p>
-              <a href="mailto:support@raktosheba.app" className="mt-1 block text-sm text-muted-foreground hover:text-foreground">
+              <a href="mailto:islamsoriful.hero@gmail.com" className="mt-1 block text-sm text-muted-foreground hover:text-foreground">
                 islamsoriful.hero@gmail.com
               </a>
             </CardContent>
@@ -48,7 +48,7 @@ export default function ContactPage() {
 
         <div className="mt-10">
           <Button size="lg" asChild>
-            <a href="mailto:support@raktosheba.app">Email us</a>
+            <a href="mailto:islamsoriful.hero@gmail.com">Email us</a>
           </Button>
         </div>
       </section>
