@@ -50,7 +50,7 @@ export default function LoginPage() {
             moment an emergency request comes in.
           </p>
         </div>
-        <p className="text-xs text-background/50">B7A7 — Blood Donation &amp; Emergency Assistance Platform</p>
+        <p className="text-xs text-background/50">Blood Donation &amp; Emergency Assistance Platform</p>
       </div>
 
       {/* Right — form panel */}
