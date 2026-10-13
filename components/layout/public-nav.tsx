@@ -6,7 +6,10 @@ export function PublicNav() {
     <header className="border-b border-border">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="font-display text-xl">
-          RaktoSheba
+          <img
+            src="/Raktaseba-logo.jpg"
+            alt="RaktoSheba Logo"
+            className="h-10 w-auto" />
         </Link>
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <Link href="/about" className="hover:text-foreground">About</Link>
