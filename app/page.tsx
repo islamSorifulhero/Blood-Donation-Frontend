@@ -15,7 +15,7 @@ export default function HomePage() {
           {/* Left Content */}
           <div className="flex flex-col justify-center">
             <h1 className="font-display text-4xl font-semibold leading-tight text-foreground md:text-5xl">
-              When blood is needed urgently, finding the right donor shouldn&rsquo;t take hours.
+              Fast, verified blood donation matching.
             </h1>
             <p className="mt-4 text-base text-muted-foreground md:text-lg">
               RaktoSheba is how verified hospitals reach compatible, nearby donors the moment
