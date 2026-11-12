@@ -48,7 +48,7 @@ function NavLinks({
       {navItems.map((item) => {
         const active =
           pathname === item.href ||
-          (item.href !== "/" && pathname.startsWith(`${item.href}/`));
+          (item.href !== "/donor" && item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
 
         const Icon = item.icon;
 
